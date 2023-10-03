@@ -2,9 +2,12 @@
   "name": "grafana-pdf",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/grafanaReports/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "image": "docker build -f config/Dockerfile -t grafana-report:1.0.0 .",
+    "start": "node dist/grafanaReports/main.js",
+    "dev": "ts-node src/grafanaReports/main.ts"
   },
   "keywords": [],
   "author": "",
