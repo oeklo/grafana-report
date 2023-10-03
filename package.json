@@ -5,9 +5,10 @@
   "main": "dist/grafanaReports/main.js",
   "scripts": {
     "build": "tsc",
-    "image": "docker build -f config/Dockerfile -t grafana-report:1.0.0 .",
+    "image": "docker build -f config/Dockerfile -t grafana-report:$(node -p -e \"require('./package.json').version\") .",
     "start": "node dist/grafanaReports/main.js",
-    "dev": "ts-node src/grafanaReports/main.ts"
+    "dev": "ts-node src/grafanaReports/main.ts",
+    "env": "env"
   },
   "keywords": [],
   "author": "",
