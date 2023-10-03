@@ -26,6 +26,7 @@ import {sendMail} from "./email";
     try {
         // using Promise.all breaks output
         for (const [index, url] of urls.entries()) {
+            console.log('Getting report', index);
             reports[url] = await getReport({
                 url: url + '&kiosk',
                 browser,
@@ -38,9 +39,11 @@ import {sendMail} from "./email";
         await browser.close();
     }
     if (doMail) {
+        console.log('Emailing reports.');
         await sendMail({
             reports,
             ...mail,
         });
     }
+    console.log('Done.')
 })();
