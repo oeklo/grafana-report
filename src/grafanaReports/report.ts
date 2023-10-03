@@ -95,5 +95,6 @@ export async function getReport({browser, basicAuth, url, viewportHeight, outPat
             bottom: 0,
             left: 0,
         },
+        printBackground: true,
     });
 }
