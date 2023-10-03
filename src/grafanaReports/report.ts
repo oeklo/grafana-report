@@ -63,19 +63,6 @@ export async function getReport({browser, basicAuth, url, viewportHeight, outPat
     await page.goto(url, {waitUntil: 'networkidle0'});
 
 
-    // Hide all panel description (top-left "i") pop-up handles and, all panel resize handles
-    // Annoyingly, it seems you can't concatenate the two object collections into one
-    await page.evaluate(() => {
-        let infoCorners = document.getElementsByClassName('panel-info-corner');
-        for (const el of infoCorners) {
-            (el as HTMLElement).hidden = true;
-        }
-        let resizeHandles = document.getElementsByClassName('react-resizable-handle');
-        for (const el of resizeHandles) {
-            (el as HTMLElement).hidden = true;
-        }
-    });
-
     // Get the height of the main canvas, and add a margin
     var height_px = await page.evaluate(() => {
         return document.getElementsByClassName('react-grid-layout')[0].getBoundingClientRect().bottom;
