@@ -7,30 +7,40 @@ import {sendMail} from "./email";
         username: process.env.GRAFANA_USERNAME!,
         password: process.env.GRAFANA_PASSWORD!,
     }
+
     const mail = {
         host: process.env.MAIL_HOST!,
         username: process.env.MAIL_USERNAME!,
         password: process.env.MAIL_PASSWORD!,
         from: process.env.MAIL_FROM!,
-        to: process.env.MAIL_TO!.split(':'),
+        to: process.env.MAIL_TO?.split(':')!,
     }
+    type MailKeys = keyof typeof mail;
+    const doMail = Object
+        .keys(mail)
+        .map((key) => mail[key as MailKeys])
+        .map(key => !!key).reduce((prev, curr) => prev && curr, true);
 
     const browser = await getBrowser();
+    const reports: Record<string, Buffer> = {};
     try {
-        const reports: Record<string, Buffer> = {};
         // using Promise.all breaks output
-        for (const url of urls)
+        for (const [index, url] of urls.entries()) {
             reports[url] = await getReport({
                 url: url + '&kiosk',
                 browser,
                 basicAuth,
                 viewportHeight: 4000,
+                outPath: doMail ? undefined : `./report-${index + 1}.pdf`,
             });
+        }
+    } finally {
+        await browser.close();
+    }
+    if (doMail) {
         await sendMail({
             reports,
             ...mail,
         });
-    } finally {
-        await browser.close();
     }
 })();

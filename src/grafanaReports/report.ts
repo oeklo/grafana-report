@@ -32,9 +32,12 @@ interface GetReportsArgs {
     }
     url: string
     viewportHeight?: number
+
+    // if set, save report to file
+    outPath?: string
 }
 
-export async function getReport({browser, basicAuth, url, viewportHeight}: GetReportsArgs): Promise<Buffer> {
+export async function getReport({browser, basicAuth, url, viewportHeight, outPath}: GetReportsArgs): Promise<Buffer> {
     const page = await browser.newPage();
 
     // Set basic auth headers
@@ -79,7 +82,7 @@ export async function getReport({browser, basicAuth, url, viewportHeight}: GetRe
     }) + 20;
 
     return await page.pdf({
-        // path: outfile,
+        path: outPath,
         width: width_px + 'px',
         height: height_px + 'px',
         //    format: 'Letter', <-- see note above for generating "paper-sized" outputs
