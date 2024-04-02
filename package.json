@@ -1,11 +1,11 @@
 {
   "name": "grafana-pdf",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/grafanaReports/main.js",
   "scripts": {
     "build": "tsc",
-    "image": "docker build -f config/Dockerfile -t grafana-report:$(node -p -e \"require('./package.json').version\") .",
+    "image": "docker build -f meta/Dockerfile -t grafana-report:$(node -p -e \"require('./package.json').version\") .",
     "start": "node dist/grafanaReports/main.js",
     "dev": "ts-node src/grafanaReports/main.ts",
     "env": "env"
