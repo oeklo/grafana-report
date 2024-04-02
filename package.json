@@ -14,14 +14,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nodemailer": "^6.9.5",
-    "puppeteer-core": "^21.3.5"
+    "nodemailer": "^6.9.13",
+    "puppeteer": "^22.6.2"
   },
   "devDependencies": {
-    "@types/node": "^18.18.0",
-    "@types/nodemailer": "^6.4.11",
-    "puppeteer": "^21.3.5",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "@types/node": "^20.11.1",
+    "@types/nodemailer": "^6.4.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
   }
 }
