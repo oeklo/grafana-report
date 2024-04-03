@@ -18,9 +18,6 @@ export async function getBrowser(): Promise<puppeteer.Browser> {
             '--no-sandbox',
             '--disable-setuid-sandbox',
         ],
-        headless: 'new',
-        // headless: false,
-        // devtools: true
     });
 }
 
@@ -43,12 +40,6 @@ export async function getReport({browser, basicAuth, url, viewportHeight, outPat
     // Set basic auth headers
     const auth_header = 'Basic ' + Buffer.from(basicAuth.username + ':' + basicAuth.password).toString('base64');
     await page.setExtraHTTPHeaders({'Authorization': auth_header});
-
-    // Increase timeout from the default of 30 seconds to 120 seconds, to allow for slow-loading panels
-    page.setDefaultNavigationTimeout(120000);
-
-    // Increasing the deviceScaleFactor gets a higher-resolution image. The width should be set to
-    // the same value as in page.pdf() below. The height is not important
     await page.setViewport({
         width: width_px,
         height: viewportHeight ?? 3000,
@@ -60,21 +51,21 @@ export async function getReport({browser, basicAuth, url, viewportHeight, outPat
     // Wait until all network connections are closed (and none are opened withing 0.5s).
     // In some cases it may be appropriate to change this to {waitUntil: 'networkidle2'},
     // which stops when there are only 2 or fewer connections remaining.
-    await page.goto(url, {waitUntil: 'networkidle0'});
+    await page.goto(url, {waitUntil: 'networkidle0', timeout:120000});
+    const panel = await page.waitForSelector('.react-grid-layout', {timeout: 120000});
 
+    let height_px = await panel?.evaluate(async (panel) => panel.getBoundingClientRect().bottom);
+    if (height_px === undefined)
+        throw new Error('Could not calculate height');
 
-    // Get the height of the main canvas, and add a margin
-    var height_px = await page.evaluate(() => {
-        return document.getElementsByClassName('react-grid-layout')[0].getBoundingClientRect().bottom;
-    }) + 20;
+    height_px += 20
+
+    console.log('rendering pdf');
 
     return await page.pdf({
         path: outPath,
         width: width_px + 'px',
         height: height_px + 'px',
-        //    format: 'Letter', <-- see note above for generating "paper-sized" outputs
-        // format: 'a4',
-        // scale: .5,
         displayHeaderFooter: false,
         margin: {
             top: 0,
