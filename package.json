@@ -1,6 +1,6 @@
 {
   "name": "grafana-pdf",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "main": "dist/grafanaReports/main.js",
   "scripts": {
@@ -14,13 +14,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nodemailer": "^6.9.13",
-    "puppeteer": "^22.6.2"
+    "nodemailer": "^6.9.14",
+    "puppeteer": "^23.2.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.1",
-    "@types/nodemailer": "^6.4.14",
+    "@types/node": "^22.5.1",
+    "@types/nodemailer": "^6.4.15",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
-  }
+    "typescript": "^5.5.4"
+  },
+  "packageManager": "yarn@4.4.1"
 }

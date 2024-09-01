@@ -1,23 +1,21 @@
-FROM node:20-buster-slim AS build
+FROM node:22-bookworm-slim AS build
 
 RUN\
      corepack install -g yarn@* &&\
-     corepack enable
+     corepack enable &&\
+     yarn config set --home enableTelemetry 0
 
 WORKDIR /opt/app
 
-COPY package.json .
-COPY yarn.lock .
-COPY meta/.yarnrc.yml .
+COPY package.json yarn.lock .yarnrc.yml ./
 
-RUN yarn install --immutable
-
+RUN yarn install
 
 COPY . .
 
 RUN yarn run build
 
-FROM satantime/puppeteer-node:20.11.1-buster-slim
+FROM satantime/puppeteer-node:22.7-bookworm-slim
 
 CMD ["node", "dist/grafanaReports/main.js"]
 WORKDIR /opt/app

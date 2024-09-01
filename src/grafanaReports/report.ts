@@ -74,5 +74,5 @@ export async function getReport({browser, basicAuth, url, viewportHeight, outPat
             left: 0,
         },
         printBackground: true,
-    });
+    }).then(Buffer.from);
 }
